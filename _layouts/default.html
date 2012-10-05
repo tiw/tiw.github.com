@@ -2,17 +2,25 @@
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/css/prettify.css" />
+        <link rel="stylesheet" href="/css/sons-of-obsidian.css" />
+        <link rel="stylesheet" href="/css/main.css" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/prettify.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            //
+        </script>
         <title>{{ page.title}}</title>
     </head>
-    <body>
+    <body onload="prettyPrint();">
         <div class="container">
             {{ content }}
         </div>
     <footer>
     <p>
     <a href="http://tiddr.de/blog">以前的blog</a>
-    <a href="tingwang.twitter.com">twitter</a>
+    <a href="http://tingwang.twitter.com">twitter</a>
     </p>
     <p style="color: #777777">
     <small><em>copyright© 2012 Ting Wang </em></small>

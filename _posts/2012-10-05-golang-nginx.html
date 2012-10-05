@@ -1,0 +1,60 @@
+---
+layout: default
+title: 通过Nginx调用golang
+---
+
+<h2> {{ page.title}} </h2>
+<p> 准备写一个小的web程序，由于最近在看golang的东西，所以就打算练练手用golang写后端。</p>
+<p>golang自带了http包，可以处理http的request。对于动态内容没什么问题，对于静态内容，
+比如说图片，js，html等，用golang读取再写到response里虽说可以，但是我比较懒，加上如果以后
+动静分离，就要自己写golang的代码。这块目前不是我要做的主要东西，于是就吧这个工作交给了
+nginx</p>
+<p>
+nginx是个反向代理，就是说来了一个request，nginx收到后决定怎么处理这个request。下图
+说明了如何处理一个request。当request的内容是个静态文件就直接读取，否者就让golang来
+处理。
+</p>
+<img src="/img/serve_golang.jpg" alt="using nginx serve golang">
+<pre class="prettyprint linenums">
+<code class="code">
+   server {
+         listen      80;
+         server_name masch.my;
+         root /Users/wangting/lernen/javascript;
+ 
+         location / {
+             proxy_pass http://localhost:9876;
+         }
+         location ~* ^.+\.(jpg|jpeg|gif|png|ico|css|zip|tgz|gz|rar|bz2|pdf|tx|tar|wav|bmp|rtf|js|flv|swf|html|htm)$
+         {
+             expires 30d;
+         }
+  }
+</code>
+</pre>
+所有静态的内容都放到/Users/wangting/lernen/javascript。下面我们写一个用来测试的
+golang程序处理发送到端口9876的httprequest。
+<pre class="prettyprint linenums prettyprinted">
+<code class="lang-go">
+package main
+
+import (
+        "fmt"
+        "net/http"
+)
+
+func main() {
+        http.HandleFunc("/", handler)
+        http.ListenAndServe(":9876", nil)
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+        fmt.Fprintf(w, "Hi, I love %s", r.URL.Path[1:])
+}
+</code>
+</pre>
+下面编译并启动这个程序。
+现在如果request是个静态的文件，nginx就会到/Users/wangting/lernen/javascript下面去找，
+否者就delegate给golang的程序去处理。
+（完）
+<p>{{ page.date | date_to_string }}</p>
