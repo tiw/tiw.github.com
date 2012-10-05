@@ -1,6 +1,7 @@
 ---
 layout: default
 title: 通过Nginx调用golang
+commentIssueId: 1
 ---
 
 <h2> {{ page.title}} </h2>
@@ -15,6 +16,9 @@ nginx是个反向代理，就是说来了一个request，nginx收到后决定怎
 处理。
 </p>
 <img src="/img/serve_golang.jpg" alt="using nginx serve golang">
+<p>
+下面是nginx的配置：
+</p>
 <pre class="prettyprint linenums">
 <code class="code">
    server {

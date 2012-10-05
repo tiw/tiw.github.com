@@ -2,12 +2,12 @@
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <link href="/css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="/css/prettify.css" />
-        <link rel="stylesheet" href="/css/sons-of-obsidian.css" />
-        <link rel="stylesheet" href="/css/main.css" />
+        <link href="{{ site.baseurl }}/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ site.baseurl }}/css/prettify.css" />
+        <link rel="stylesheet" href="{{ site.baseurl }}/css/sons-of-obsidian.css" />
+        <link rel="stylesheet" href="{{ site.baseurl }}/css/main.css" />
         <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-        <script type="text/javascript" src="/js/prettify.js"></script>
+        <script type="text/javascript" src="{{ site.baseurl }}/js/prettify.js"></script>
         <script type="text/javascript" charset="utf-8">
             //
         </script>
@@ -18,16 +18,16 @@
             <div class="navbar navbar-fixed-top">
                 <div class="navbar-inner">
                     <div class="container">
-                        <a class="brand" href="/">tiddr</a>
+                        <a class="brand" href="{{ site.baseurl }}/">tiddr</a>
                         <div class="nav-collapse">
                             <!--<ul class="nav">-->
                                 <!--<li><a>订餐电话 <strong>400-899-2828</strong></a></li>-->
                             <!--</ul>-->
 
                             <ul class="nav pull-right">
-                                <!--<li><a><i class="icon-map-marker"></i>送餐范围</a></li>-->
-                                <!--<li><a><i class="icon-search"></i>订单查询</a></li>-->
-                                <!--<li><a><i class="icon-search"></i>积分查询</a></li>-->
+                                <li><a href="http://twitter.com/tingwang"><i class="icon-user"></i>My Twitter</a></li>
+                                <li><a href="http://github.com/tiw"><i class="icon-hdd"></i>My Github</a></li>
+                                <li><a href="http://tiddr.de/blog"><i class="icon-bookmark"></i>My Old Blog</a></li>
                                 <!--<li><a><i class="icon-user"></i>登陆</a></li>-->
                                 <!--<li><a><i class="icon-shopping-cart"></i>购物车(200)</a></li>-->
                             </ul>
@@ -40,11 +40,13 @@
         <div class="container">
             {{ content }}
         </div>
+        <div id="comments" class="container">
+            <h2> Comments </h2>
+            <div id="header">
+               Click <a href="https://github.com/tiw/tiw.github.com/issues/{{page.commentIssueId}}"> here</a> to add your comment. a GitHub account is needed.
+            </div>
+        </div>
     <footer>
-    <p>
-    <a href="http://tiddr.de/blog">以前的blog</a>
-    <a href="http://tingwang.twitter.com">twitter</a>
-    </p>
     <p style="color: #777777">
     <small><em>copyright© 2012 Ting Wang </em></small>
     </p>   
@@ -53,6 +55,42 @@
     </p>   
     
     </footer>
-        
+<script type="text/javascript" src="http://datejs.googlecode.com/svn/trunk/build/date-en-US.js"></script>
+
+<script type="text/javascript">
+  $("#post p,#post li").each( function(index) {
+    if (index > 0 && $.trim($(this).text()).length > 0) {
+      $(this).attr("id", "par" + index.toString());
+      var html = $(this).html();
+      $(this).html(html + " <a href='#par" + index.toString() + "'>#</a>");
+    }
+  });
+</script>
+
+
+<script type="text/javascript">
+
+    function loadComments(data) {  
+        for (var i=0; i<data.length; i++) {
+            var cuser = data[i].user.login;
+            var cuserlink = "https://www.github.com/" + data[i].user.login;
+            var clink = "https://github.com/tiw/tiw.github.com/issues/{{page.commentIssueId}}#issuecomment-" + data[i].url.substring(data[i].url.lastIndexOf("/")+1);
+            var cbody = data[i].body_html;
+            var cavatarlink = data[i].user.avatar_url;
+            var cdate = Date.parse(data[i].created_at).toString("yyyy-MM-dd HH:mm:ss");
+
+            $("#comments").append("<div class='comment'><div class='commentheader'><div class='commentgravatar'>" + '<img src="' + cavatarlink + '" alt="" width="20" height="20">' + "</div><a class='commentuser' href=\""+ cuserlink + "\">" + cuser + "</a><a class='commentdate' href=\"" + clink + "\">" + cdate + "</a></div><div class='commentbody'>" + cbody + "</div></div>");
+        }
+    }
+
+$.ajax("https://api.github.com/repos/tiw/tiw.github.com/issues/{{page.commentIssueId}}/comments", {
+headers: {Accept: "application/vnd.github.full+json"},
+dataType: "json",
+success: function(msg){
+loadComments(msg);
+}
+});
+</script>
+         
     </body>
 </html>
