@@ -1,0 +1,47 @@
+---
+layout: default
+title: angular的MVC结构
+commentIssueId: 3
+---
+
+<h2> {{ page.title}} </h2>
+<section>
+开始看angularjs的东西，第一印象和Backbonejs不同的是angularjs重度的使用标记在html tag上
+的自己的attribute来实现一定的功能，例如在用ng-app来标记一个应用. Dojo在也使用了类似
+的方法，用一种声明式的方法来创建widget。
+<pre class="prettyprint linenums">
+<code class="html">
+    &lt;button id="btn" data-dojo-type="dijit/form/Button"
+        data-dojo-props="
+            onClick:function(){ console.log('First button was clicked!'); }"&gt;
+        Click Me!
+    &lt;/button&gt;
+</code>
+</pre>
+
+当时反感这样方式的原因是，如果有一个小的typo很
+难发现问题出在哪里，没法通过分析代码的方式找到原因。而这种方法却是有其优点，就是编程由
+How过度到了What。backbonejs提供了最基础的东西，类似数据的绑定之类的东西都要自己写，这样
+一来对每个form都要写类似的代码来绑定数据。<br />
+下面的代码会常常出现在backbonjs的app里，功能就是当一个item被添加到了一个list里之后
+要在list的view里把这个model也添加进去。每添加一个新的item比如project，customer之类
+的，这类的代码都要重新写。
+</section>
+
+<pre class="prettyprint linenums">
+<code class="javascript">
+
+initialize: function(){
+    this.timeFragmentCollection.bind('add', this.addOne, this);
+},
+addOne: function(model) {
+    var timeFragmentView = new TimeFragmentView({model: model});
+    this.$('.time-fragment-list').append(timeFragmentView.render().el);
+},
+
+</code>
+</pre>
+
+<section>
+angular通过标记实现了类似上面的功能，对应用户就不用关心底层的具体实现了。
+</section>

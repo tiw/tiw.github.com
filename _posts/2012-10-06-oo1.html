@@ -1,0 +1,51 @@
+---
+layout: default
+title: OO
+commentIssueId: 2
+---
+
+<h2> {{ page.title}} </h2>
+OO的目的是数据和作用于数据之上的方法的封装。
+让我看先看看不同语言对OO的实现。
+<h3> Java 的OO </h3>
+很长时间以来，我对OO的理解就是Java的OO，通过class实现，继承等
+<pre class="prettyprint linenums">
+<code class="lang-java">
+class Person {
+    string fristName;
+    string lastName;
+    public Persion(string firstName, string lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public string getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public void sayHi() {
+        System.out.println(this.getFullName() + " said Hi to you");
+    }
+}
+
+class Pirate extends Person{
+    private bottelOfRum = 0;
+    public void drinkRum() {
+        System.out.println(this.getFullName() + "has drunk " + this.bottelOfRum + " rum");
+        this.bottelOfRum ++;
+    }
+}
+
+Person jack = new Pirate("Jack", "Sparrow");
+jack.sayHi();
+</code>
+</pre>
+<p>
+这里我们看到先通过class定义了一个封装的代码块，里面有些数据，还有些可以作用于
+这些数据的方法. 这里值得注意，但是经常忽视的是<e>this</e>关键字。也许是太熟悉
+了，才容易忽视吧。这个this到底是什么呢？
+</p>
+<p>
+this简单的说就是指向当前对象（object）的一个引用。通过这个this可以访问这个对象的内部，
+比如对象里的数据或者是对象里的方法。
+</p>
