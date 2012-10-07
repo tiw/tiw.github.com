@@ -71,4 +71,54 @@ func main() {
 }
 </code>
 </pre>
+<h3>插入复杂的doc</h3>
+mgo会自动插入关联的数据
+<pre class="prettyprint linenums">
+<code class="lang-go">
+package main
+import (
+    "fmt"
+    "labix.org/v2/mgo"
+)
+
+type Person struct {
+    Name string
+    Phone string
+}
+
+type Order struct {
+    Id int
+    Customer Person
+}
+
+func main() {
+    p := Person{"Ting Wang", "1360109827"}
+    o := Order{1, p}
+    fmt.Println(o.Customer.Name)
+
+    saveOrder(o)
+}
+func saveOrder(order Order) {
+    
+	session, err := mgo.Dial("localhost")
+	if err != nil {
+		panic(err)
+	}
+	defer session.Close()
+
+	con := session.DB("test").C("order")
+  err = con.Insert(order)
+  if err != nil {
+      panic(err)
+  }
+}
+</code>
+</pre>
+执行之后查看数据如下:
+<pre class="prettyprint linenums">
+<code class="shell">
+&;gt db.order.find();
+{ "_id" : ObjectId("50717dbe0cdae3d7f536abb1"), "id" : 1, "customer" : { "name" : "Ting Wang", "phone" : "1360109827" } }
+</code>
+</pre>
 <p>{{ page.date | date_to_string }}</p>
