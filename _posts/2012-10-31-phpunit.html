@@ -1,0 +1,17 @@
+---
+layout: default
+title: PHPUnit安装的问题
+commentIssueId: 4
+---
+
+<h2> {{ page.title}} </h2>
+<p>
+Composer还是个新鲜东西，想法却是不错但是目前的状态还是不稳定，在PHPunit上
+已经前后遇到两个问题了。
+</p>
+<p>
+一个是composer用inlude引入文件，就出现一个function加载两次的问题。另外一个
+就是今天遇到的，bootstrap测试的时候composer的auload类被加载了两次。最终还是用
+pear安装phpunit，解决了问题。
+</p>
+尝试新鲜的东西总是有代价的。
