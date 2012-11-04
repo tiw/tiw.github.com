@@ -1,0 +1,61 @@
+---
+layout: default
+title: Setup Module in Zf2
+commentIssueId: 7
+---
+
+<h2> {{ page.title}} </h2>
+
+<p>
+Zf2 is a module based framework. It makes it very easy to develop module based
+application. When you create a new module Module.php is very important. In this
+file you have to define how the class in the module could be load, e.g. about
+setting up the autoloader. And the which config file should be loaded which
+service this module provides etc also defined here. 
+</p>
+</p>
+User ZfcBase/Module/AbstractModule implements some common tasks, to extend this
+abstract class will save you some time.
+</p>
+For example the following code is a very basic Module.php.
+<pre class="prettyprint linenums prettyprinted">
+<code class="php">
+    public function getAutoloaderConfig()
+    {
+        return array(
+            'Zend\Loader\ClassMapAutoloader' => array(
+                __DIR__ . '/autoload_classmap.php',
+            ),
+            'Zend\Loader\StandardAutoloader' => array(
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                ),
+            ),
+        );
+    }
+
+    public function getConfig()
+    {
+        return include __DIR__ . '/config/module.config.php';
+    }
+</code>
+</pre>
+These two methods are needed for almost very module. Using ZfcBase\Module\AbstractModule makes it simpler
+<pre class="prettyprint linenums prettyprinted">
+<code class="php">
+namespace User;
+
+use ZfcBase\Module\AbstractModule;
+class Module extends AbstractModule
+{
+    public function getDir()
+    {
+        return __DIR__;
+    }
+    public function getNamespace()
+    {
+        return __NAMESPACE__;
+    }
+}
+</code>
+</pre>
