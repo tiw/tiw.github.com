@@ -1,0 +1,18 @@
+---
+layout: default
+title: All these are false
+commentIssueId: 6
+---
+
+<h2> {{ page.title}} </h2>
+<pre class="prettyprint linenums prettyprinted">
+<code class="php">
+$a = false;
+$b = 0;
+$c = null;
+$d = '';
+$e = 'you see me';
+
+echo $a?:$b?:$c?:$d?:$e; // you see me
+</code>
+</pre>
