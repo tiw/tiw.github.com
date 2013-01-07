@@ -1,0 +1,30 @@
+---
+layout: default
+title: 使用resty测试restful服务
+commentIssueId: 7
+---
+
+<h2>{{ page.title }} </h2>
+<a href="https://github.com/micha/resty">resty</a>是在curl的基础上做了分装，
+知道如何使用curl测试restful服务对理解resty很有帮助。
+<h3>curl测试restful 服务</h3>
+curl是个强大的工具， 可以组合生成各式各样的http request， 还能显示返回的http response.
+下面的例子用curl发送了一个post请求(-X)， 发送的内容类型为application/json(-H + http header)。
+发送内容为'{"name":"ting"}' (-d)。要求显示返回的http header(-i)
+<code class="shell">
+    curl -i -X POST -H "content-type:application/json" http://yourRestApi.com/product -d '{"name":"ting"}'
+</code>
+
+<h3>resty如何简化</h3>
+上面例子的resty的方法为：
+
+<code class="shell">
+    source resty // zsh, for bash . resty
+    resty http://yourRestApi.com
+    POST /product -i -H "content-type:application/json" -d '{"name":"ting"}'
+</code>
+<ul>
+    <li>定义一次http document的路径， 之后输入相对路就就可以了</li>
+    <li>兼容所有的curl options</li>
+    <li>http method 作为命令， 这里是POST</li>
+</ul>
