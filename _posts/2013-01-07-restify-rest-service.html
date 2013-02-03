@@ -1,0 +1,58 @@
+---
+layout: default
+title: 使用restify提供restful服务
+commentIssueId: 9
+---
+
+<h2>{{ page.title }} </h2>
+<h3>对restful框架的要求</h3>
+<ul>
+    <li>对一个资源可以施加不同动作 GET POST PUT DELETE 路由方法</li>
+    <li>可以设定response的头</li>
+    <li>可以检测request的头</li>
+    <li>取得request的内容</li>
+</ul>
+
+<h3>restify如何解决这些问题</h3>
+<h4>路由方法</h4>
+<pre class="prettyprint">
+    <code class="javascript">
+        var restify = require('restify');
+        var server = restify.createServer();
+        server.post('/product', saveProduct);
+    </code>
+</pre>
+前两行是初始化一个server, 关键是第三行。 restify的方法是http method为函数名，
+第一个参数为资源uri， 第二个参数为处理请求的方法。
+
+<h4>设定response头</h4>
+<pre class="prettyprint">
+    <code class="javascript">
+function() saveProduct(req, res, next) {
+    //.... generate id
+    res.header('Location', '/product/', id);
+}
+    </code>
+</pre>
+
+<h4>检测request的头</h4>
+<pre class="prettyprint">
+    <code class="javascript">
+function() saveProduct(req, res, next) {
+    //.... generate id
+
+    console.log(req.headers);
+}
+    </code>
+</pre>
+
+<h4>取得request的内容</h4>
+如果是需要restify吧内容自动转换为json的话需要在创建server后加一个middleware。
+<pre class="prettyprint">
+    <code class="javascript">
+var server = restify.createServer();
+server.use(restify.bodyParser());
+    </code>
+</pre>
+req.body返回的是raw的内容, req.params返回的是jsonfy的.
+
